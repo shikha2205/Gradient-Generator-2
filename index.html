@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Generator</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <section>
+        <h2>Pick Your Gradient Colors</h2>
+        <input type="color" id="color1" value="#051937">
+        <input type="color" id="color2" value="#004d7a">
+        
+        <label for="preset">Select a Gradient Preset:</label>
+        <select id="preset">
+            <option value="to right, #051937, #00bf72">Dark to Green</option>
+            <option value="to right, #ff7e5f, #feb47b">Warm Sunset</option>
+            <option value="to right, #00d2ff, #3a7bd5">Blue Sky</option>
+            <option value="to right, #8360c3, #2ebf91">Purple Dream</option>
+        </select>
+
+        <div class="copycode">
+            background-image: linear-gradient(to right, #051937, #004d7a);
+        </div>
+
+        <button id="saveBtn">Save Gradient</button>
+    </section>
+
+    <script>
+        const color1 = document.getElementById('color1');
+        const color2 = document.getElementById('color2');
+        const copyDiv = document.querySelector('.copycode');
+        const preset = document.getElementById('preset');
+        const saveBtn = document.getElementById('saveBtn');
+
+        const updateGradient = () => {
+            const gradient = `linear-gradient(to right, ${color1.value}, ${color2.value})`;
+            document.body.style.backgroundImage = gradient;
+            copyDiv.innerText = `background-image: ${gradient};`;
+        };
+
+        color1.addEventListener('input', updateGradient);
+        color2.addEventListener('input', updateGradient);
+
+        preset.addEventListener('change', () => {
+            const gradient = `linear-gradient(${preset.value})`;
+            document.body.style.backgroundImage = gradient;
+            copyDiv.innerText = `background-image: ${gradient};`;
+        });
+
+        const saveGradient = () => {
+            localStorage.setItem('savedGradient', document.body.style.backgroundImage);
+        };
+
+        const loadGradient = () => {
+            const savedGradient = localStorage.getItem('savedGradient');
+            if (savedGradient) {
+                document.body.style.backgroundImage = savedGradient;
+                copyDiv.innerText = `background-image: ${savedGradient};`;
+            }
+        };
+
+        window.addEventListener('load', loadGradient);
+        saveBtn.addEventListener('click', saveGradient);
+    </script>
+</body>
+</html>
